@@ -63,3 +63,15 @@ new AudioPlayer({
 ## DEMO演示
 
 [audio-player](http://shenjp.top/v-audio-player/public/index.html)
+
+## 开发
+
+```bash
+git clone https://github.com/Shenjieping/v-audio-player.git
+
+npm install
+
+npm run serve
+
+npm run build
+```
