@@ -56,7 +56,7 @@ new AudioPlayer({
 
 | 参数 | 说明 | 类型 |  默认值  |
 |:-----|:---|:----| :----- |
-| el | 播放器容器 | HTMLElement|String | -- |
+| el | 播放器容器 | HTMLElement/String | -- |
 | title | 音频标题 | String | -- |
 | url | 音频地址 | String | 必填 |
 | playStatus | 播放暂停事件 | function(val) | -- |

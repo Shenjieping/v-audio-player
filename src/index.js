@@ -1,3 +1,4 @@
+import slider from './slider.min.js';
 import { getDom } from "./util";
 
 class AudioPlayer {
