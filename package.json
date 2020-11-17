@@ -1,5 +1,5 @@
 {
-  "name": "v-slider",
+  "name": "v-audio-player",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shenjieping/v-slider.git"
+    "url": "git+https://github.com/Shenjieping/v-audio-player.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Shenjieping/v-slider/issues"
+    "url": "https://github.com/Shenjieping/v-audio-player/issues"
   },
-  "homepage": "https://github.com/Shenjieping/v-slider#readme",
+  "homepage": "https://github.com/Shenjieping/v-audio-player#readme",
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
