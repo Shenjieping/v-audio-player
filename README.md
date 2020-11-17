@@ -5,7 +5,6 @@
 ```html
 <link rel="stylesheet" href="./css/style.css">
 <script src="./js/touch.js"></script>
-<script src="./js/slider.min.js"></script>
 <script src="./../dist/audioPlayer.js"></script>
 ```
 
