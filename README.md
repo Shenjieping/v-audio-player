@@ -61,3 +61,6 @@ new AudioPlayer({
 | url | 音频地址 | String | 必填 |
 | playStatus | 播放暂停事件 | function(val) | -- |
 
+## DEMO演示
+
+[audio-player](http://shenjp.top/v-audio-player/public/index.html)
