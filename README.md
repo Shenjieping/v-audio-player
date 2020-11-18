@@ -60,6 +60,7 @@ new AudioPlayer({
 | title | 音频标题 | String | -- |
 | url | 音频地址 | String | 必填 |
 | showFixed | 是否显示浮窗 | Boolean | false |
+| fixedClass | 浮窗类名 | String | -- |
 | playStatus | 播放暂停事件 | function(val) | -- |
 
 ## DEMO演示
