@@ -1,4 +1,5 @@
-import slider from './slider.min.js';
+// const Slider = require('./slider.min.js');
+import Slider from './slider.es.js';
 import { getDom } from "./util";
 
 class AudioPlayer {
@@ -21,7 +22,7 @@ class AudioPlayer {
     this.el.querySelector('.title').innerHTML = this.title;
     this.audioEl.setAttribute('src', this.url);
     this.getAudioInfo();
-    this.el.querySelector('.icon-audio').addEventListener('click', this.playAndPause)
+    this.el.querySelector('.icon-audio').addEventListener('click', this.playAndPause);
   }
   initHtml = () => {
     const html = `
@@ -35,8 +36,50 @@ class AudioPlayer {
         </div>
       </div>
       <audio class="audio-wapper" preload></audio>
-    `
+    `;
     this.el.innerHTML = html;
+  }
+  initFixSlider = () => {
+    if (!this.options.showFixed) {
+      return;
+    }
+    let fixAudio = document.createElement('div');
+    fixAudio.className = 'audio-player-fixed';
+    const htmlFixed = `
+      <span class="icon icon-audio"></span>
+      <div class="audio-info">
+        <div class="title"></div>
+        <div class="v-slider"></div>
+        <div class="audio-time">
+          <div class="audio-current">00:00</div>
+          <div class="audio-duration">00:00</div>
+        </div>
+      </div>
+      <span class="icon icon-close-btn"></span>
+    `;
+    fixAudio.innerHTML = htmlFixed;
+    this.fixAudio = fixAudio;
+    document.body.appendChild(fixAudio);
+
+    this.fixAudio.querySelector('.title').innerHTML = this.title;
+    this.fixAudio.querySelector('.icon-audio').addEventListener('click', this.playAndPause);
+    this.fixAudio.querySelector('.icon-close-btn').addEventListener('click', this.closeFixSlider);
+    this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
+    this.fixSlider = new Slider({
+      el: this.fixAudio.querySelector('.v-slider'),
+      step: 0.1,
+      value: this.currentTimeValue,
+      buttonSize: this.options.buttonSize || '10px',
+      activeColor: this.options.activeColor || '#F45E23',
+      change: this.changeTime
+    });
+  }
+  closeFixSlider = () => {
+    if (this.fixAudio) {
+      this.fixAudio.parentNode.removeChild(this.fixAudio);
+      this.fixAudio = null;
+      this.audioPause();
+    }
   }
   initSlider = () => {
     this.slider = new Slider({
@@ -53,15 +96,18 @@ class AudioPlayer {
     let audio = this.audioEl;
     if (this.play) {
       audio.play();
+      this.initFixSlider();
     } else {
       audio.pause();
+      this.closeFixSlider();
     }
     this.options.playStatus && this.options.playStatus(this.play, this.el.dataset.index);
   }
-  audioPause () {
+  audioPause = () => {
     this.showPlayFixed = false;
     this.play = false;
     this.audioEl.pause();
+    this.closeFixSlider();
   }
   changeTime = (val) => {
     let audio = this.audioEl;
@@ -72,6 +118,9 @@ class AudioPlayer {
     audio.addEventListener('loadedmetadata', () => {
       this.duration = this.transTime(audio.duration);
       this.el.querySelector('.audio-duration').innerHTML = this.duration;
+      if (this.fixAudio) {
+        this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
+      }
     });
     audio.addEventListener('timeupdate', () => {
       let value = (Math.floor(audio.currentTime) / Math.floor(audio.duration)) * 100;
@@ -79,6 +128,10 @@ class AudioPlayer {
       this.currentTime = this.transTime(audio.currentTime);
       this.slider.updateValue(this.currentTimeValue);
       this.el.querySelector('.audio-current').innerHTML = this.currentTime;
+      if (this.fixAudio) {
+        this.fixSlider.updateValue(this.currentTimeValue);
+        this.fixAudio.querySelector('.audio-current').innerHTML = this.currentTime;
+      }
     });
     audio.addEventListener('ended', () => {
       this.play = false;
@@ -88,6 +141,9 @@ class AudioPlayer {
       this.currentTimeValue = 0;
       this.slider.updateValue(this.currentTimeValue);
       this.el.querySelector('.audio-current').innerHTML = this.currentTime;
+      if (this.fixAudio) {
+        this.closeFixSlider();
+      }
     }, false);
   }
   transTime = (time) => {

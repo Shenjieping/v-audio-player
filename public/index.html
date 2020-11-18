@@ -21,6 +21,7 @@
       url: 'http://jsvod.fzyun.cn/live_upload/custom/20200831/1802ab08-937b-48e0-bf20-4d6756d2c8a4.mp3', // 音频地址
       activeColor: '#F45E23', // 进度条颜色
       buttonSize: '12px', // 进度条按钮大小
+      showFixed: true,
       playStatus: function(val, index) {
         let audio = document.querySelectorAll('.audio-player');
         [...audio].forEach(el => { // 阻止多个audio同时播放

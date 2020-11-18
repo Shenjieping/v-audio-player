@@ -59,6 +59,25 @@ body {
   align-items: center;
   background-color: #f6f6f6;
 }
+.audio-player-fixed {
+  margin: 10px 0;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  background-color: #f6f6f6;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+.audio-player-fixed .icon-close-btn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  height: 16px;
+  width: 16px;
+  background-image: url(./../img/38.png);
+  background-size: 100% 100%;
+}
 .icon-audio {
   display: inline-block;
   height: 33px;
