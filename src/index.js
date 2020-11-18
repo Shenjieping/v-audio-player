@@ -15,6 +15,7 @@ class AudioPlayer {
     this.play = false;
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
+    this.loading = false;
     this.init();
     this.initSlider();
   }
@@ -26,7 +27,9 @@ class AudioPlayer {
   }
   initHtml = () => {
     const html = `
-      <span class="icon icon-audio"></span>
+      <span class="icon icon-audio">
+        <span class="icon icon-loading"></span>
+      </span>
       <div class="audio-info">
         <div class="title"></div>
         <div class="v-slider"></div>
@@ -44,15 +47,15 @@ class AudioPlayer {
       return;
     }
     let fixAudio = document.createElement('div');
-    fixAudio.className = 'audio-player-fixed';
+    fixAudio.className = `audio-player-fixed ${this.options.fixedClass || ''}`;
     const htmlFixed = `
       <span class="icon icon-audio"></span>
       <div class="audio-info">
         <div class="title"></div>
         <div class="v-slider"></div>
         <div class="audio-time">
-          <div class="audio-current">00:00</div>
-          <div class="audio-duration">00:00</div>
+          <div class="audio-current">${this.currentTime}</div>
+          <div class="audio-duration">${this.duration}</div>
         </div>
       </div>
       <span class="icon icon-close-btn"></span>
@@ -64,7 +67,7 @@ class AudioPlayer {
     this.fixAudio.querySelector('.title').innerHTML = this.title;
     this.fixAudio.querySelector('.icon-audio').addEventListener('click', this.playAndPause);
     this.fixAudio.querySelector('.icon-close-btn').addEventListener('click', this.closeFixSlider);
-    this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
+    // this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
     this.fixSlider = new Slider({
       el: this.fixAudio.querySelector('.v-slider'),
       step: 0.1,
@@ -91,6 +94,9 @@ class AudioPlayer {
     });
   }
   playAndPause = () => {
+    if (!this.loading) {
+      return;
+    }
     this.play = !this.play;
     this.showPlayFixed = true;
     let audio = this.audioEl;
@@ -99,7 +105,7 @@ class AudioPlayer {
       this.initFixSlider();
     } else {
       audio.pause();
-      this.closeFixSlider();
+      // this.closeFixSlider();
     }
     this.options.playStatus && this.options.playStatus(this.play, this.el.dataset.index);
   }
@@ -116,8 +122,13 @@ class AudioPlayer {
   getAudioInfo = () => {
     let audio = this.audioEl;
     audio.addEventListener('loadedmetadata', () => {
+      this.loading = true;
       this.duration = this.transTime(audio.duration);
       this.el.querySelector('.audio-duration').innerHTML = this.duration;
+      const loadingImg = this.el.querySelector('.icon-audio .icon-loading');
+      if (loadingImg) {
+        this.el.querySelector('.icon-audio').removeChild(loadingImg);
+      }
       if (this.fixAudio) {
         this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
       }

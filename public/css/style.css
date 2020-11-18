@@ -86,6 +86,13 @@ body {
   background-size: 100% 100%;
   margin: 0 10px 0 20px;
 }
+.icon-loading {
+  display: inline-block;
+  height: 33px;
+  width: 33px;
+  background-image: url(./../img/loading.gif);
+  background-size: 100% 100%;
+}
 .audio-info {
   flex: 1;
   margin-right: 20px;

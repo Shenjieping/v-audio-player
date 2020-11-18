@@ -218,7 +218,7 @@
     });
 
     _defineProperty(this, "initHtml", function () {
-      var html = "\n      <span class=\"icon icon-audio\"></span>\n      <div class=\"audio-info\">\n        <div class=\"title\"></div>\n        <div class=\"v-slider\"></div>\n        <div class=\"audio-time\">\n          <div class=\"audio-current\">00:00</div>\n          <div class=\"audio-duration\">00:00</div>\n        </div>\n      </div>\n      <audio class=\"audio-wapper\" preload></audio>\n    ";
+      var html = "\n      <span class=\"icon icon-audio\">\n        <span class=\"icon icon-loading\"></span>\n      </span>\n      <div class=\"audio-info\">\n        <div class=\"title\"></div>\n        <div class=\"v-slider\"></div>\n        <div class=\"audio-time\">\n          <div class=\"audio-current\">00:00</div>\n          <div class=\"audio-duration\">00:00</div>\n        </div>\n      </div>\n      <audio class=\"audio-wapper\" preload></audio>\n    ";
       _this.el.innerHTML = html;
     });
 
@@ -228,8 +228,8 @@
       }
 
       var fixAudio = document.createElement('div');
-      fixAudio.className = 'audio-player-fixed';
-      var htmlFixed = "\n      <span class=\"icon icon-audio\"></span>\n      <div class=\"audio-info\">\n        <div class=\"title\"></div>\n        <div class=\"v-slider\"></div>\n        <div class=\"audio-time\">\n          <div class=\"audio-current\">00:00</div>\n          <div class=\"audio-duration\">00:00</div>\n        </div>\n      </div>\n      <span class=\"icon icon-close-btn\"></span>\n    ";
+      fixAudio.className = "audio-player-fixed ".concat(_this.options.fixedClass || '');
+      var htmlFixed = "\n      <span class=\"icon icon-audio\"></span>\n      <div class=\"audio-info\">\n        <div class=\"title\"></div>\n        <div class=\"v-slider\"></div>\n        <div class=\"audio-time\">\n          <div class=\"audio-current\">".concat(_this.currentTime, "</div>\n          <div class=\"audio-duration\">").concat(_this.duration, "</div>\n        </div>\n      </div>\n      <span class=\"icon icon-close-btn\"></span>\n    ");
       fixAudio.innerHTML = htmlFixed;
       _this.fixAudio = fixAudio;
       document.body.appendChild(fixAudio);
@@ -237,9 +237,9 @@
 
       _this.fixAudio.querySelector('.icon-audio').addEventListener('click', _this.playAndPause);
 
-      _this.fixAudio.querySelector('.icon-close-btn').addEventListener('click', _this.closeFixSlider);
+      _this.fixAudio.querySelector('.icon-close-btn').addEventListener('click', _this.closeFixSlider); // this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
 
-      _this.fixAudio.querySelector('.audio-duration').innerHTML = _this.duration;
+
       _this.fixSlider = new c({
         el: _this.fixAudio.querySelector('.v-slider'),
         step: 0.1,
@@ -271,6 +271,10 @@
     });
 
     _defineProperty(this, "playAndPause", function () {
+      if (!_this.loading) {
+        return;
+      }
+
       _this.play = !_this.play;
       _this.showPlayFixed = true;
       var audio = _this.audioEl;
@@ -280,9 +284,7 @@
 
         _this.initFixSlider();
       } else {
-        audio.pause();
-
-        _this.closeFixSlider();
+        audio.pause(); // this.closeFixSlider();
       }
 
       _this.options.playStatus && _this.options.playStatus(_this.play, _this.el.dataset.index);
@@ -305,8 +307,15 @@
     _defineProperty(this, "getAudioInfo", function () {
       var audio = _this.audioEl;
       audio.addEventListener('loadedmetadata', function () {
+        _this.loading = true;
         _this.duration = _this.transTime(audio.duration);
         _this.el.querySelector('.audio-duration').innerHTML = _this.duration;
+
+        var loadingImg = _this.el.querySelector('.icon-audio .icon-loading');
+
+        if (loadingImg) {
+          _this.el.querySelector('.icon-audio').removeChild(loadingImg);
+        }
 
         if (_this.fixAudio) {
           _this.fixAudio.querySelector('.audio-duration').innerHTML = _this.duration;
@@ -374,6 +383,7 @@
     this.play = false;
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
+    this.loading = false;
     this.init();
     this.initSlider();
   };
