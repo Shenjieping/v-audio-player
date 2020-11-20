@@ -41,6 +41,40 @@
     return obj;
   }
 
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
   function t(e) {
     return (t = "function" == typeof Symbol && "symbol" == _typeof(Symbol.iterator) ? function (t) {
       return _typeof(t);
@@ -249,14 +283,15 @@
       _this.fixAudio.querySelector('.icon-close-btn').addEventListener('click', _this.closeFixSlider); // this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
 
 
-      _this.fixSlider = new l({
+      _this.fixSlider = new l(_objectSpread2(_objectSpread2({
         el: _this.fixAudio.querySelector('.v-slider'),
         step: 0.1,
         value: _this.currentTimeValue,
-        buttonSize: _this.options.buttonSize || '10px',
-        activeColor: _this.options.activeColor || '#F45E23',
+        buttonSize: '10px',
+        activeColor: '#F45E23'
+      }, _this.sliderOptions), {}, {
         change: _this.changeTime
-      });
+      }));
     });
 
     _defineProperty(this, "closeFixSlider", function () {
@@ -270,13 +305,14 @@
     });
 
     _defineProperty(this, "initSlider", function () {
-      _this.slider = new l({
+      _this.slider = new l(_objectSpread2(_objectSpread2({
         el: _this.el.querySelector('.v-slider'),
         step: 0.1,
-        buttonSize: _this.options.buttonSize || '10px',
-        activeColor: _this.options.activeColor || '#F45E23',
+        buttonSize: '10px',
+        activeColor: '#F45E23'
+      }, _this.sliderOptions), {}, {
         change: _this.changeTime
-      });
+      }));
     });
 
     _defineProperty(this, "playAndPause", function () {
@@ -406,6 +442,7 @@
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
     this.loading = false;
+    this.sliderOptions = options.sliderOptions;
     this.init();
     this.initSlider();
   };

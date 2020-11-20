@@ -16,6 +16,7 @@ class AudioPlayer {
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
     this.loading = false;
+    this.sliderOptions = options.sliderOptions
     this.init();
     this.initSlider();
   }
@@ -72,8 +73,9 @@ class AudioPlayer {
       el: this.fixAudio.querySelector('.v-slider'),
       step: 0.1,
       value: this.currentTimeValue,
-      buttonSize: this.options.buttonSize || '10px',
-      activeColor: this.options.activeColor || '#F45E23',
+      buttonSize: '10px',
+      activeColor: '#F45E23',
+      ...this.sliderOptions,
       change: this.changeTime
     });
   }
@@ -88,8 +90,9 @@ class AudioPlayer {
     this.slider = new Slider({
       el: this.el.querySelector('.v-slider'),
       step: 0.1,
-      buttonSize: this.options.buttonSize || '10px',
-      activeColor: this.options.activeColor || '#F45E23',
+      buttonSize: '10px',
+      activeColor: '#F45E23',
+      ...this.sliderOptions,
       change: this.changeTime
     });
   }
