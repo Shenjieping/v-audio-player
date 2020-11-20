@@ -145,10 +145,10 @@ class AudioPlayer {
       let value = (Math.floor(audio.currentTime) / Math.floor(audio.duration)) * 100;
       this.currentTimeValue = (parseInt(value * 100)) / 100;
       this.currentTime = this.transTime(audio.currentTime);
-      this.slider.updateValue(this.currentTimeValue);
+      this.slider.setValue(this.currentTimeValue);
       this.el.querySelector('.audio-current').innerHTML = this.currentTime;
       if (this.fixAudio) {
-        this.fixSlider.updateValue(this.currentTimeValue);
+        this.fixSlider.setValue(this.currentTimeValue);
         this.fixAudio.querySelector('.audio-current').innerHTML = this.currentTime;
       }
     });
@@ -158,9 +158,10 @@ class AudioPlayer {
       audio.pause();
       this.currentTime = '00:00';
       this.currentTimeValue = 0;
-      this.slider.updateValue(this.currentTimeValue);
+      this.slider.setValue(this.currentTimeValue);
       this.el.querySelector('.audio-current').innerHTML = this.currentTime;
       if (this.fixAudio) {
+        this.fixSlider.setValue(this.currentTimeValue);
         this.closeFixSlider();
       }
     }, false);
