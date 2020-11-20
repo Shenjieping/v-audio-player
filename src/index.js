@@ -133,6 +133,14 @@ class AudioPlayer {
         this.fixAudio.querySelector('.audio-duration').innerHTML = this.duration;
       }
     });
+    audio.addEventListener('error', () => {
+      this.loading = true;
+      const loadingImg = this.el.querySelector('.icon-audio .icon-loading');
+      if (loadingImg) {
+        this.el.querySelector('.icon-audio').removeChild(loadingImg);
+      }
+      this.options.error && this.options.error();
+    });
     audio.addEventListener('timeupdate', () => {
       let value = (Math.floor(audio.currentTime) / Math.floor(audio.duration)) * 100;
       this.currentTimeValue = (parseInt(value * 100)) / 100;

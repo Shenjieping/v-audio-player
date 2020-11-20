@@ -321,6 +321,17 @@
           _this.fixAudio.querySelector('.audio-duration').innerHTML = _this.duration;
         }
       });
+      audio.addEventListener('error', function () {
+        _this.loading = true;
+
+        var loadingImg = _this.el.querySelector('.icon-audio .icon-loading');
+
+        if (loadingImg) {
+          _this.el.querySelector('.icon-audio').removeChild(loadingImg);
+        }
+
+        _this.options.error && _this.options.error();
+      });
       audio.addEventListener('timeupdate', function () {
         var value = Math.floor(audio.currentTime) / Math.floor(audio.duration) * 100;
         _this.currentTimeValue = parseInt(value * 100) / 100;

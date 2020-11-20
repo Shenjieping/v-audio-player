@@ -62,6 +62,7 @@ new AudioPlayer({
 | showFixed | 是否显示浮窗 | Boolean | false |
 | fixedClass | 浮窗类名 | String | -- |
 | playStatus | 播放暂停事件 | function(val) | -- |
+| error | 音频加载失败的回调 | function() | -- |
 
 ## DEMO演示
 
