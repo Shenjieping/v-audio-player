@@ -309,7 +309,8 @@
         el: _this.el.querySelector('.v-slider'),
         step: 0.1,
         buttonSize: '10px',
-        activeColor: '#F45E23'
+        activeColor: '#F45E23',
+        disabled: !_this.loading
       }, _this.sliderOptions), {}, {
         change: _this.changeTime
       }));
@@ -353,6 +354,9 @@
       var audio = _this.audioEl;
       audio.addEventListener('loadedmetadata', function () {
         _this.loading = true;
+
+        _this.initSlider();
+
         _this.duration = _this.transTime(audio.duration);
         _this.el.querySelector('.audio-duration').innerHTML = _this.duration;
 
@@ -442,7 +446,7 @@
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
     this.loading = false;
-    this.sliderOptions = options.sliderOptions;
+    this.sliderOptions = options.sliderOptions || {};
     this.init();
     this.initSlider();
   };

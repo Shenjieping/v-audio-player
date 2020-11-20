@@ -16,7 +16,7 @@ class AudioPlayer {
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
     this.loading = false;
-    this.sliderOptions = options.sliderOptions
+    this.sliderOptions = options.sliderOptions || {}
     this.init();
     this.initSlider();
   }
@@ -92,6 +92,7 @@ class AudioPlayer {
       step: 0.1,
       buttonSize: '10px',
       activeColor: '#F45E23',
+      disabled: !this.loading,
       ...this.sliderOptions,
       change: this.changeTime
     });
@@ -126,6 +127,7 @@ class AudioPlayer {
     let audio = this.audioEl;
     audio.addEventListener('loadedmetadata', () => {
       this.loading = true;
+      this.initSlider();
       this.duration = this.transTime(audio.duration);
       this.el.querySelector('.audio-duration').innerHTML = this.duration;
       const loadingImg = this.el.querySelector('.icon-audio .icon-loading');
