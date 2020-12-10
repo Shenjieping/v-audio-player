@@ -16,6 +16,7 @@ class AudioPlayer {
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
     this.loading = false;
+    this.isDestory = false;
     this.sliderOptions = options.sliderOptions || {}
     this.init();
     this.initSlider();
@@ -44,6 +45,7 @@ class AudioPlayer {
     this.el.innerHTML = html;
   }
   initFixSlider = () => {
+    if (this.isDestory) return;
     if (!this.options.showFixed) {
       return;
     }
@@ -80,6 +82,7 @@ class AudioPlayer {
     });
   }
   closeFixSlider = () => {
+    if (this.isDestory) return;
     if (this.fixAudio) {
       this.fixAudio.parentNode.removeChild(this.fixAudio);
       this.fixAudio = null;
@@ -87,6 +90,7 @@ class AudioPlayer {
     }
   }
   initSlider = () => {
+    if (this.isDestory) return;
     this.slider = new Slider({
       el: this.el.querySelector('.v-slider'),
       step: 0.1,
@@ -98,6 +102,7 @@ class AudioPlayer {
     });
   }
   playAndPause = () => {
+    if (this.isDestory) return;
     if (!this.loading) {
       return;
     }
@@ -114,6 +119,7 @@ class AudioPlayer {
     this.options.playStatus && this.options.playStatus(this.play, this.el.dataset.index);
   }
   audioPause = () => {
+    if (this.isDestory) return;
     this.showPlayFixed = false;
     this.play = false;
     this.audioEl.pause();
@@ -147,6 +153,7 @@ class AudioPlayer {
       this.options.error && this.options.error();
     });
     audio.addEventListener('timeupdate', () => {
+      if (this.isDestory) return;
       let value = (Math.floor(audio.currentTime) / Math.floor(audio.duration)) * 100;
       this.currentTimeValue = (parseInt(value * 100)) / 100;
       this.currentTime = this.transTime(audio.currentTime);
@@ -158,6 +165,7 @@ class AudioPlayer {
       }
     });
     audio.addEventListener('ended', () => {
+      if (this.isDestory) return;
       this.play = false;
       this.showPlayFixed = false;
       audio.pause();
@@ -185,6 +193,18 @@ class AudioPlayer {
       sec = '0' + sec;
     }
     return minute + isM0 + sec;
+  }
+  destory = () => {
+    this.audioPause();
+    this.isDestory = true;
+    if (this.fixAudio) {
+      this.fixAudio.parentNode.removeChild(this.fixAudio);
+      this.fixAudio = null;
+    }
+    if (this.el) {
+      this.el.parentNode.removeChild(this.el);
+      this.el = null;
+    }
   }
 };
 

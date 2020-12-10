@@ -266,6 +266,8 @@
     });
 
     _defineProperty(this, "initFixSlider", function () {
+      if (_this.isDestory) return;
+
       if (!_this.options.showFixed) {
         return;
       }
@@ -295,6 +297,8 @@
     });
 
     _defineProperty(this, "closeFixSlider", function () {
+      if (_this.isDestory) return;
+
       if (_this.fixAudio) {
         _this.fixAudio.parentNode.removeChild(_this.fixAudio);
 
@@ -305,6 +309,7 @@
     });
 
     _defineProperty(this, "initSlider", function () {
+      if (_this.isDestory) return;
       _this.slider = new l(_objectSpread2(_objectSpread2({
         el: _this.el.querySelector('.v-slider'),
         step: 0.1,
@@ -317,6 +322,8 @@
     });
 
     _defineProperty(this, "playAndPause", function () {
+      if (_this.isDestory) return;
+
       if (!_this.loading) {
         return;
       }
@@ -337,6 +344,7 @@
     });
 
     _defineProperty(this, "audioPause", function () {
+      if (_this.isDestory) return;
       _this.showPlayFixed = false;
       _this.play = false;
 
@@ -382,6 +390,7 @@
         _this.options.error && _this.options.error();
       });
       audio.addEventListener('timeupdate', function () {
+        if (_this.isDestory) return;
         var value = Math.floor(audio.currentTime) / Math.floor(audio.duration) * 100;
         _this.currentTimeValue = parseInt(value * 100) / 100;
         _this.currentTime = _this.transTime(audio.currentTime);
@@ -397,6 +406,7 @@
         }
       });
       audio.addEventListener('ended', function () {
+        if (_this.isDestory) return;
         _this.play = false;
         _this.showPlayFixed = false;
         audio.pause();
@@ -434,6 +444,24 @@
       return minute + isM0 + sec;
     });
 
+    _defineProperty(this, "destory", function () {
+      _this.audioPause();
+
+      _this.isDestory = true;
+
+      if (_this.fixAudio) {
+        _this.fixAudio.parentNode.removeChild(_this.fixAudio);
+
+        _this.fixAudio = null;
+      }
+
+      if (_this.el) {
+        _this.el.parentNode.removeChild(_this.el);
+
+        _this.el = null;
+      }
+    });
+
     this.options = options;
     this.url = this.options.url;
     this.title = this.options.title;
@@ -446,6 +474,7 @@
     this.showPlayFixed = false;
     this.audioEl = this.el.querySelector('.audio-wapper');
     this.loading = false;
+    this.isDestory = false;
     this.sliderOptions = options.sliderOptions || {};
     this.init();
     this.initSlider();

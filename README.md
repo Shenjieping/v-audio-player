@@ -68,6 +68,17 @@ new AudioPlayer({
 | playStatus | 播放暂停事件 | function(val) | -- |
 | error | 音频加载失败的回调 | function() | -- |
 
+------
+
+**卸载组件**
+
+```js
+const audio = new AudioPlayer({
+  //...
+})
+audio.detory()
+```
+
 ----
 
 **sliderOptions 配置**

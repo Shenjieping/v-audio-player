@@ -14,6 +14,7 @@
   <div class="audio-player player1" data-index="1"></div>
   <p>demo2</p>
   <div class="audio-player player2" data-index="2"></div>
+  <button id="detory">卸载demo2</button>
   <script>
     new AudioPlayer({
       el: document.querySelector('.player1'), // 容器，必填
@@ -34,7 +35,7 @@
         })
       }
     });
-    new AudioPlayer({
+    var audio2 = new AudioPlayer({
       el: document.querySelector('.player2'),
       title: '测试音频地址2222',
       url: 'http://jsvod.fzyun.cn/live_upload/custom/20200831/1802ab08-937b-48e0-bf20-4d6756d2c8a4.mp3',
@@ -47,6 +48,9 @@
         })
       }
     });
+    document.querySelector('#detory').onclick = function() {
+      audio2.destory();
+    }
   </script>
 </body>
 </html>
